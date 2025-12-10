@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Qalm - Premium Breathing</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Premium breathing exercises for mindfulness and relaxation">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiUWFsbSIsInNob3J0X25hbWUiOiJRYWxtIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwMDAwMDAiLCJ0aGVtZV9jb2xvciI6IiMwMDAwMDAiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lpSUhacFpYZENiM2c5SWpBZ01DQXhNamdnTVRJNElpQm1hV3hzUFNJak1EQXdJaUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lQanh5WldOMElIZzlJakl3SWlCNVBTSXlNQ0lpSUhkcFpIUm9QU0k0T0NJZ2FHVnBaMmgwUFNJNE9DSWdabWxzYkQwaUkwWkdSa1pHSWlCeWVEMGlOQ0l2UGp3dmMzWm5QZz09IiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJzaXplcyI6IjEyOHgxMjgifV19">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9IiMwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iODgiIGhlaWdodD0iODgiIGZpbGw9IiNGRkZGRiIgcng9IjQiLz48L3N2Zz4=">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main breathing circle -->
+        <div class="breathing-container">
+            <div id="breathing-circle" class="breathing-circle">
+                <div class="circle-content">
+                    <div id="phase-text" class="phase-text" aria-live="polite">Ready</div>
+                    <div id="timer-text" class="timer-text"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-container">
+            <button id="play-pause-btn" class="control-btn primary" aria-label="Start breathing exercise">
+                <span class="btn-text">Start</span>
+            </button>
+            
+            <div class="protocol-selector">
+                <select id="protocol-select" class="protocol-select" aria-label="Select breathing protocol">
+                    <option value="4-7-8">4-7-8 Relaxation</option>
+                    <option value="box">Box Breathing</option>
+                    <option value="coherent">Coherent Breathing</option>
+                    <option value="physiological">Physiological Sigh</option>
+                    <option value="custom">Custom Protocol</option>
+                </select>
+            </div>
+
+            <button id="sound-toggle" class="control-btn secondary" aria-label="Toggle sound">
+                <span class="btn-text">Sound: On</span>
+            </button>
+        </div>
+
+        <!-- Custom Protocol Panel -->
+        <div id="custom-panel" class="custom-panel hidden">
+            <h3>Custom Protocol</h3>
+            <div class="timing-controls">
+                <div class="timing-group">
+                    <label for="inhale-duration">Inhale (ms)</label>
+                    <input type="range" id="inhale-duration" min="1000" max="10000" step="100" value="4000">
+                    <span class="duration-display">4.0s</span>
+                </div>
+                <div class="timing-group">
+                    <label for="hold1-duration">Hold (ms)</label>
+                    <input type="range" id="hold1-duration" min="0" max="15000" step="100" value="7000">
+                    <span class="duration-display">7.0s</span>
+                </div>
+                <div class="timing-group">
+                    <label for="exhale-duration">Exhale (ms)</label>
+                    <input type="range" id="exhale-duration" min="1000" max="15000" step="100" value="8000">
+                    <span class="duration-display">8.0s</span>
+                </div>
+                <div class="timing-group">
+                    <label for="hold2-duration">Hold 2 (ms)</label>
+                    <input type="range" id="hold2-duration" min="0" max="10000" step="100" value="0">
+                    <span class="duration-display">0.0s</span>
+                </div>
+            </div>
+            <div class="custom-actions">
+                <button id="save-custom" class="control-btn secondary">Save Protocol</button>
+                <button id="close-custom" class="control-btn secondary">Close</button>
+            </div>
+        </div>
+
+        <!-- Help Modal -->
+        <div id="help-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Qalm Breathing Guide</h3>
+                <div class="help-content">
+                    <p><strong>Keyboard Shortcuts:</strong></p>
+                    <ul>
+                        <li>Space - Start/Pause</li>
+                        <li>← → - Switch protocols</li>
+                        <li>S - Toggle sound</li>
+                        <li>H - Show/hide help</li>
+                    </ul>
+                    <p><strong>Breathing Protocols:</strong></p>
+                    <ul>
+                        <li><strong>4-7-8:</strong> Relaxation technique</li>
+                        <li><strong>Box:</strong> Equal timing for focus</li>
+                        <li><strong>Coherent:</strong> Heart rate variability</li>
+                        <li><strong>Physiological Sigh:</strong> Stress relief</li>
+                    </ul>
+                </div>
+                <button id="close-help" class="control-btn primary">Close</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <button id="help-btn" class="help-btn" aria-label="Show help">?</button>
+            <span class="version">v1.0</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
